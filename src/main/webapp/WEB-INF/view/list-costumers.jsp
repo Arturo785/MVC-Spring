@@ -9,41 +9,64 @@
     <title>List customers</title>
 
     <link type="text/css"
-        rel="stylesheet"
-        href="${pageContext.request.contextPath}/resources/css/style.css"
+          rel="stylesheet"
+          href="${pageContext.request.contextPath}/resources/css/style.css"
     />
 
 </head>
 
 <body>
-    <div id="wrapper">
-        <div id="header">
-            <h1> Welcome to list customers </h1>
-        </div>
+<div id="wrapper">
+    <div id="header">
+        <h1> Welcome to list customers </h1>
     </div>
+</div>
 
-    <div id="container">
+<div id="container">
 
-        <div id="content">
-            <table>
+    <div id="content">
+
+        <input type="button" value="Add Customer"
+               onclick="window.location.href='showFormForAdd'; return false;"
+               class="add-button"
+        />
+
+        <table>
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+
+            <%-- the var of the for each and the model value from the controller--%>
+            <c:forEach var="customer" items="${customers}">
+
+                <c:url var="updateLink" value="/customer/showFormForUpdate">
+                    <c:param name="customerId" value="${customer.id}"/>
+                </c:url>
+
+                <c:url var="deleteLink" value="/customer/deleteCustomer">
+                    <c:param name="customerId" value="${customer.id}"/>
+                </c:url>
+
                 <tr>
-                    <th>First name</th>
-                    <th>Last name</th>
-                    <th>Email</th>
+                    <td>${customer.firstName}</td>
+                    <td>${customer.lastName}</td>
+                    <td>${customer.email}</td>
+
+                    <td>
+                        <a href="${updateLink}"> Update </a>
+                        <a href="${deleteLink}"
+                           onclick="if (!(confirm('Are you sure to delete this customer?'))) return false"
+                        > Delete</a>
+                    </td>
                 </tr>
-
-                    <%-- the if of the for each and the model value from the controller--%>
-                <c:forEach var="customer" items="${customers}">
-                    <tr>
-                        <td>${customer.firstName}</td>
-                        <td>${customer.lastName}</td>
-                        <td>${customer.email}</td>
-                    </tr>
-                </c:forEach>
-            </table>
-        </div>
-
+            </c:forEach>
+        </table>
     </div>
+
+</div>
 </body>
 
 </html>
